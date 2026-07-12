@@ -1,0 +1,184 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Yogis — Yoga classes, courses & studios',
+  description = 'Book classes, practice online, and find your studio. Yoga for every body at Yogis.',
+} = Astro.props;
+
+const nav = [
+  { label: 'Schedule', href: '/schedule' },
+  { label: 'Courses', href: '/courses' },
+  { label: 'Studios', href: '/studios' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'New to Yogis', href: '/new-to-yogis' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="/" class="logo">yogis</a>
+        <nav aria-label="Main">
+          <ul class="nav-list">
+            {nav.map((item) => (
+              <li><a href={item.href}>{item.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+        <div class="header-actions">
+          <a href="/login" class="login-link">Log in</a>
+          <a href="/schedule" class="btn btn-primary btn-sm">Book a class</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <a href="/" class="logo logo-light">yogis</a>
+          <p class="footer-tag">Yoga for every body.</p>
+        </div>
+        <nav aria-label="Footer">
+          <ul class="footer-links">
+            {nav.map((item) => (
+              <li><a href={item.href}>{item.label}</a></li>
+            ))}
+            <li><a href="/login">Member login</a></li>
+          </ul>
+        </nav>
+        <p class="footer-copy">© {new Date().getFullYear()} Yogis. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <style>
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: color-mix(in srgb, var(--cream) 88%, transparent);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(58, 53, 66, 0.07);
+      }
+
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-top: 0.9rem;
+        padding-bottom: 0.9rem;
+      }
+
+      .logo {
+        font-family: var(--font-display);
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: var(--text);
+        text-decoration: none;
+        letter-spacing: 0.01em;
+      }
+
+      .nav-list {
+        display: flex;
+        gap: 1.4rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .nav-list a {
+        color: var(--text);
+        text-decoration: none;
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .nav-list a:hover { color: var(--purple-dark); }
+
+      .header-actions { display: flex; align-items: center; gap: 1rem; }
+
+      .login-link {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+
+      .login-link:hover { color: var(--purple-dark); }
+
+      .btn-sm { padding: 0.55rem 1.2rem; font-size: 0.9rem; }
+
+      .site-footer {
+        background: var(--text);
+        color: var(--cream);
+        padding: 3rem 0 2rem;
+        margin-top: 0;
+      }
+
+      .footer-inner {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 2rem;
+        align-items: start;
+      }
+
+      .logo-light { color: var(--cream); }
+
+      .footer-tag { color: var(--blue); margin-top: 0.4rem; }
+
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .footer-links a {
+        color: var(--cream);
+        text-decoration: none;
+        font-size: 0.92rem;
+        opacity: 0.85;
+      }
+
+      .footer-links a:hover { opacity: 1; color: var(--lavender); }
+
+      .footer-copy {
+        width: 100%;
+        margin: 1.5rem 0 0;
+        font-size: 0.85rem;
+        opacity: 0.6;
+      }
+
+      @media (max-width: 860px) {
+        .nav-list { display: none; }
+      }
+    </style>
+  </body>
+</html>

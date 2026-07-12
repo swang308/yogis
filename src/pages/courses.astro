@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Online Courses — Yogis" description="Guided online yoga courses from Yogis. Practice anywhere, at your pace.">
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Online courses</span>
+      <h1>Practice anywhere, at your pace</h1>
+      <p class="page-sub">
+        Structured video courses taught by our studio teachers. Buy once, keep forever —
+        stream on any device, whenever it fits your day.
+      </p>
+
+      <div class="grid-3">
+        <article class="card course-card">
+          <div class="course-banner" style="background:var(--blue)"></div>
+          <div class="course-body">
+            <h3>Foundations of Yoga</h3>
+            <p>21 days to a confident practice. Learn breath, alignment, and the poses you'll meet in every class.</p>
+            <ul class="course-points">
+              <li>Daily 15–25 minute classes</li>
+              <li>Pose library with alignment cues</li>
+              <li>No equipment beyond a mat</li>
+            </ul>
+            <div class="course-foot"><span class="course-lessons">21 lessons</span><span class="course-price">$49</span></div>
+            <a href="/login" class="btn btn-primary course-btn">Get the course</a>
+          </div>
+        </article>
+
+        <article class="card course-card">
+          <div class="course-banner" style="background:var(--lavender)"></div>
+          <div class="course-body">
+            <h3>Flexibility Reset</h3>
+            <p>A 4-week deep-stretch series for tight hips, hamstrings, and shoulders. 20 minutes a day.</p>
+            <ul class="course-points">
+              <li>Progressive week-by-week plan</li>
+              <li>Morning and evening variants</li>
+              <li>Desk-worker friendly</li>
+            </ul>
+            <div class="course-foot"><span class="course-lessons">28 lessons</span><span class="course-price">$59</span></div>
+            <a href="/login" class="btn btn-primary course-btn">Get the course</a>
+          </div>
+        </article>
+
+        <article class="card course-card">
+          <div class="course-banner" style="background:var(--purple)"></div>
+          <div class="course-body">
+            <h3>Strong Flow</h3>
+            <p>Build strength and balance with progressive vinyasa. Arm balances and inversions, step by step.</p>
+            <ul class="course-points">
+              <li>4 phases, 4 lessons each</li>
+              <li>Drills for crow, headstand, handstand</li>
+              <li>Modifications for every level</li>
+            </ul>
+            <div class="course-foot"><span class="course-lessons">16 lessons</span><span class="course-price">$69</span></div>
+            <a href="/login" class="btn btn-primary course-btn">Get the course</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section how-strip">
+    <div class="container">
+      <h2>How it works</h2>
+      <div class="grid-3">
+        <div class="how-step">
+          <span class="how-num">1</span>
+          <h3>Buy once</h3>
+          <p>Pay securely online. Your course is tied to your Yogis account — no subscription, no expiry.</p>
+        </div>
+        <div class="how-step">
+          <span class="how-num">2</span>
+          <h3>Practice anywhere</h3>
+          <p>Stream every lesson on your phone, laptop, or TV. Pick up exactly where you left off.</p>
+        </div>
+        <div class="how-step">
+          <span class="how-num">3</span>
+          <h3>Ask your teacher</h3>
+          <p>Every course includes a monthly live Q&amp;A call with the teacher who made it.</p>
+        </div>
+      </div>
+      <p class="guarantee">Not for you? Full refund within 14 days, no questions asked.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-sub { color: var(--text-soft); max-width: 42rem; margin-bottom: 2.5rem; }
+
+  .course-banner { height: 110px; }
+  .course-body { padding: 1.3rem 1.4rem 1.5rem; }
+  .course-body > p { color: var(--text-soft); font-size: 0.95rem; }
+
+  .course-points {
+    margin: 0 0 1rem;
+    padding-left: 1.1rem;
+    color: var(--text-soft);
+    font-size: 0.92rem;
+  }
+
+  .course-points li { margin-bottom: 0.3rem; }
+
+  .course-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; }
+  .course-lessons { font-size: 0.88rem; color: var(--text-soft); }
+  .course-price { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--purple-dark); }
+
+  .course-btn { display: block; text-align: center; margin-top: 1rem; }
+
+  .how-strip { background: var(--blue); }
+
+  .how-step { text-align: center; padding: 0 1rem; }
+
+  .how-num {
+    display: inline-grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--purple-dark);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .how-step p { color: var(--text-soft); font-size: 0.95rem; }
+
+  .guarantee {
+    text-align: center;
+    margin: 2.5rem 0 0;
+    font-weight: 600;
+    color: var(--purple-dark);
+  }
+</style>

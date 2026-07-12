@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.astro/
+install.log
+_deploy.zip
+
+# env
+.env
+.env.*
+!.env.example
+
+# os / editor
+.DS_Store

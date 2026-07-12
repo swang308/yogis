@@ -1,0 +1,96 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Studios — Yogis" description="Visit Yogis Downtown and Yogis Riverside. Locations, hours, and amenities.">
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Our studios</span>
+      <h1>Two homes for your practice</h1>
+      <p class="page-sub">Every membership and class pack works at both locations.</p>
+
+      <div class="grid-2">
+        <article class="card studio-card">
+          <div class="studio-banner" style="background:var(--blue)"></div>
+          <div class="studio-body">
+            <h2>Yogis Downtown</h2>
+            <p>
+              Our flagship studio — two light-filled practice rooms, showers, and a tea bar
+              in the heart of the city. Arrive early, stay late.
+            </p>
+            <ul class="studio-facts">
+              <li><strong>Address:</strong> 128 Main Street</li>
+              <li><strong>Hours:</strong> Mon–Fri 6:30a–9p · Sat–Sun 8a–6p</li>
+              <li><strong>Amenities:</strong> showers, lockers, mat &amp; towel rental, tea bar</li>
+              <li><strong>Getting here:</strong> 2 min from Central Station · bike racks out front</li>
+            </ul>
+            <div class="studio-actions">
+              <a href="/schedule" class="btn btn-primary">See classes here</a>
+              <a href="#" class="btn btn-ghost">Get directions</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card studio-card">
+          <div class="studio-banner" style="background:var(--lavender)"></div>
+          <div class="studio-body">
+            <h2>Yogis Riverside</h2>
+            <p>
+              A calm space by the water. Smaller classes, warm wood floors, and sunset views
+              from the mat. Home of our yin, restorative, and beginner programs.
+            </p>
+            <ul class="studio-facts">
+              <li><strong>Address:</strong> 4 River Walk</li>
+              <li><strong>Hours:</strong> Mon–Fri 8a–8:30p · Sat–Sun 9a–5p</li>
+              <li><strong>Amenities:</strong> lockers, mat &amp; towel rental, changing rooms</li>
+              <li><strong>Getting here:</strong> riverside path · free 2-hr parking on River Rd</li>
+            </ul>
+            <div class="studio-actions">
+              <a href="/schedule" class="btn btn-primary">See classes here</a>
+              <a href="#" class="btn btn-ghost">Get directions</a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="visit-note card">
+        <h3>First visit?</h3>
+        <p>
+          Come 15 minutes early and we'll show you around. Mats, towels, and tea are on us
+          for your first class. Questions? Email <a href="mailto:hello@yogis.example">hello@yogis.example</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-sub { color: var(--text-soft); margin-bottom: 2.5rem; }
+
+  .studio-banner { height: 160px; }
+
+  .studio-body { padding: 1.5rem 1.6rem 1.8rem; }
+
+  .studio-body h2 { font-size: 1.6rem; }
+
+  .studio-body > p { color: var(--text-soft); font-size: 0.98rem; }
+
+  .studio-facts {
+    list-style: none;
+    margin: 1.2rem 0;
+    padding: 0;
+    font-size: 0.95rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .studio-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.2rem; }
+
+  .visit-note {
+    margin-top: 3rem;
+    padding: 1.8rem 2rem;
+    background: var(--lavender);
+  }
+
+  .visit-note p { margin: 0; max-width: 48rem; }
+</style>

@@ -1,0 +1,376 @@
+---
+import Base from '../layouts/Base.astro';
+
+const todaysClasses = [
+  { time: '7:00 AM', name: 'Sunrise Vinyasa', teacher: 'Marcus', studio: 'Downtown', level: 'All levels', spots: 6 },
+  { time: '9:30 AM', name: 'Gentle Hatha', teacher: 'Priya', studio: 'Riverside', level: 'Beginner', spots: 12 },
+  { time: '12:15 PM', name: 'Lunch Flow Express', teacher: 'Jules', studio: 'Downtown', level: 'Intermediate', spots: 4 },
+  { time: '6:00 PM', name: 'Yin & Restore', teacher: 'Sofia', studio: 'Riverside', level: 'All levels', spots: 9 },
+];
+
+const courses = [
+  {
+    name: 'Foundations of Yoga',
+    desc: '21 days to a confident practice. Learn breath, alignment, and the poses you\'ll meet in every class.',
+    lessons: 21,
+    price: '$49',
+    accent: 'var(--blue)',
+  },
+  {
+    name: 'Flexibility Reset',
+    desc: 'A 4-week deep-stretch series for tight hips, hamstrings, and shoulders. Practice anywhere, 20 minutes a day.',
+    lessons: 28,
+    price: '$59',
+    accent: 'var(--lavender)',
+  },
+  {
+    name: 'Strong Flow',
+    desc: 'Build strength and balance with progressive vinyasa. Arm balances and inversions, broken down step by step.',
+    lessons: 16,
+    price: '$69',
+    accent: 'var(--purple)',
+  },
+];
+
+const studios = [
+  {
+    name: 'Yogis Downtown',
+    desc: 'Our flagship studio — two light-filled practice rooms, showers, and a tea bar in the heart of the city.',
+    address: '128 Main Street',
+    accent: 'var(--blue)',
+  },
+  {
+    name: 'Yogis Riverside',
+    desc: 'A calm space by the water. Smaller classes, warm wood floors, and sunset views from the mat.',
+    address: '4 River Walk',
+    accent: 'var(--lavender)',
+  },
+];
+
+const posts = [
+  { title: 'What to expect in your first yoga class', date: 'Jul 2, 2026', href: '/blog' },
+  { title: '5 morning stretches that take 5 minutes', date: 'Jun 24, 2026', href: '/blog' },
+  { title: 'Yin vs. restorative: which one do you need?', date: 'Jun 15, 2026', href: '/blog' },
+];
+---
+
+<Base>
+  <!-- ===== Hero ===== -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow">Studios · Online courses · Community</span>
+        <h1>Find your flow, on and off the mat</h1>
+        <p class="hero-sub">
+          Book classes at our studios, practice online with guided courses, and grow
+          with a community that meets you where you are.
+        </p>
+        <div class="hero-ctas">
+          <a href="/schedule" class="btn btn-primary">Book a class</a>
+          <a href="/courses" class="btn btn-ghost">Explore online courses</a>
+        </div>
+        <p class="hero-note">New here? Get your first week of unlimited classes for <strong>$25</strong>.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="presentation">
+          <circle cx="200" cy="200" r="170" fill="var(--blue)" opacity="0.55" />
+          <circle cx="255" cy="150" r="105" fill="var(--lavender)" opacity="0.75" />
+          <circle cx="150" cy="255" r="80" fill="var(--purple)" opacity="0.8" />
+          <path
+            d="M60 300 Q200 220 340 300"
+            stroke="var(--purple-dark)"
+            stroke-width="6"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <circle cx="200" cy="118" r="26" fill="var(--cream)" />
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Today's schedule ===== -->
+  <section class="section schedule">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Today at Yogis</span>
+          <h2>Drop in whenever it suits you</h2>
+        </div>
+        <a href="/schedule" class="btn btn-light">View full schedule</a>
+      </div>
+      <ul class="class-list">
+        {todaysClasses.map((c) => (
+          <li class="class-row card">
+            <span class="class-time">{c.time}</span>
+            <span class="class-name">{c.name}</span>
+            <span class="class-meta">with {c.teacher} · {c.studio} · {c.level}</span>
+            <span class="class-spots">{c.spots} spots left</span>
+            <a href="/schedule" class="btn btn-primary btn-sm">Book</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== Online courses ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Online courses</span>
+          <h2>Practice anywhere, at your pace</h2>
+        </div>
+        <a href="/courses" class="btn btn-ghost">All courses</a>
+      </div>
+      <div class="grid-3">
+        {courses.map((course) => (
+          <article class="card course-card">
+            <div class="course-banner" style={`background:${course.accent}`}></div>
+            <div class="course-body">
+              <h3>{course.name}</h3>
+              <p>{course.desc}</p>
+              <div class="course-foot">
+                <span class="course-lessons">{course.lessons} lessons</span>
+                <span class="course-price">{course.price}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== New to Yogis ===== -->
+  <section class="section new-strip">
+    <div class="container new-inner">
+      <div>
+        <span class="eyebrow">New to Yogis?</span>
+        <h2>Your first week, unlimited — $25</h2>
+        <p>
+          Try every class, every teacher, both studios. We'll help you find the style
+          that fits. No experience, flexibility, or fancy leggings required.
+        </p>
+      </div>
+      <a href="/new-to-yogis" class="btn btn-primary">Start here</a>
+    </div>
+  </section>
+
+  <!-- ===== Studios ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Our studios</span>
+          <h2>Two homes for your practice</h2>
+        </div>
+        <a href="/studios" class="btn btn-ghost">Visit us</a>
+      </div>
+      <div class="grid-2">
+        {studios.map((s) => (
+          <article class="card studio-card">
+            <div class="studio-banner" style={`background:${s.accent}`}></div>
+            <div class="studio-body">
+              <h3>{s.name}</h3>
+              <p>{s.desc}</p>
+              <p class="studio-address">{s.address}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Blog ===== -->
+  <section class="section blog">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">From the blog</span>
+          <h2>Notes on practice</h2>
+        </div>
+        <a href="/blog" class="btn btn-light">All posts</a>
+      </div>
+      <ul class="post-list">
+        {posts.map((post) => (
+          <li>
+            <a href={post.href} class="post-link">
+              <span class="post-title">{post.title}</span>
+              <span class="post-date">{post.date}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== Final CTA ===== -->
+  <section class="section cta-band">
+    <div class="container cta-inner">
+      <h2>Ready to step on the mat?</h2>
+      <p>Join Yogis today — book your first class or start an online course in minutes.</p>
+      <div class="hero-ctas">
+        <a href="/schedule" class="btn btn-light">Book a class</a>
+        <a href="/login" class="btn btn-ghost btn-ghost-light">Become a member</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ===== Hero ===== */
+  .hero { padding: 4rem 0 3rem; }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--text-soft);
+    max-width: 34rem;
+  }
+
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin: 1.6rem 0 1rem;
+  }
+
+  .hero-note { font-size: 0.95rem; color: var(--text-soft); }
+
+  .hero-art svg { width: 100%; height: auto; }
+
+  /* ===== Schedule ===== */
+  .schedule { background: var(--blue); }
+
+  .class-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .class-row {
+    display: grid;
+    grid-template-columns: 90px 1.2fr 1fr auto auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.4rem;
+  }
+
+  .class-time { font-weight: 700; color: var(--purple-dark); }
+  .class-name { font-weight: 600; }
+  .class-meta { color: var(--text-soft); font-size: 0.92rem; }
+  .class-spots { font-size: 0.88rem; color: var(--text-soft); }
+
+  .btn-sm { padding: 0.5rem 1.1rem; font-size: 0.88rem; }
+
+  /* ===== Courses ===== */
+  .course-banner { height: 110px; }
+
+  .course-body { padding: 1.3rem 1.4rem 1.5rem; }
+
+  .course-body p { color: var(--text-soft); font-size: 0.95rem; }
+
+  .course-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .course-lessons { font-size: 0.88rem; color: var(--text-soft); }
+
+  .course-price {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--purple-dark);
+  }
+
+  /* ===== New to Yogis ===== */
+  .new-strip { background: var(--lavender); }
+
+  .new-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .new-inner p { max-width: 36rem; margin-bottom: 0; }
+
+  /* ===== Studios ===== */
+  .studio-banner { height: 140px; }
+
+  .studio-body { padding: 1.3rem 1.4rem 1.5rem; }
+
+  .studio-body p { color: var(--text-soft); font-size: 0.95rem; }
+
+  .studio-address { font-weight: 600; color: var(--purple-dark); margin-bottom: 0; }
+
+  /* ===== Blog ===== */
+  .blog { background: var(--cream); }
+
+  .post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .post-list li + li { border-top: 1px solid rgba(58, 53, 66, 0.12); }
+
+  .post-link {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 0.2rem;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .post-link:hover .post-title { color: var(--purple-dark); }
+
+  .post-title { font-weight: 600; }
+
+  .post-date { color: var(--text-soft); font-size: 0.9rem; white-space: nowrap; }
+
+  /* ===== CTA band ===== */
+  .cta-band {
+    background: linear-gradient(120deg, var(--purple) 0%, var(--purple-dark) 100%);
+    color: var(--white);
+  }
+
+  .cta-inner { text-align: center; }
+
+  .cta-inner p { opacity: 0.9; }
+
+  .cta-inner .hero-ctas { justify-content: center; }
+
+  .btn-ghost-light { color: var(--white); border-color: rgba(255, 255, 255, 0.7); }
+
+  @media (max-width: 860px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-art { max-width: 320px; margin: 0 auto; }
+    .class-row {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        'time book'
+        'name book'
+        'meta book'
+        'spots book';
+    }
+    .class-time { grid-area: time; }
+    .class-name { grid-area: name; }
+    .class-meta { grid-area: meta; }
+    .class-spots { grid-area: spots; }
+    .class-row .btn { grid-area: book; align-self: center; }
+  }
+</style>

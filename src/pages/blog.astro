@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Blog — Yogis" description="Notes on practice: articles on yoga, breath, and everyday movement from the Yogis teachers.">
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">From the blog</span>
+      <h1>Notes on practice</h1>
+      <p class="page-sub">Short, useful writing from our teachers. New posts most weeks.</p>
+
+      <ul class="post-list">
+        <li class="card post-card">
+          <a href="#" class="post-link">
+            <div>
+              <h3 class="post-title">What to expect in your first yoga class</h3>
+              <p class="post-teaser">Where to stand, what to bring, and why nobody is looking at you. A friendly walkthrough of your first 60 minutes.</p>
+            </div>
+            <span class="post-date">Jul 2, 2026</span>
+          </a>
+        </li>
+        <li class="card post-card">
+          <a href="#" class="post-link">
+            <div>
+              <h3 class="post-title">5 morning stretches that take 5 minutes</h3>
+              <p class="post-teaser">A tiny routine you can do before coffee. No mat required, pajamas acceptable.</p>
+            </div>
+            <span class="post-date">Jun 24, 2026</span>
+          </a>
+        </li>
+        <li class="card post-card">
+          <a href="#" class="post-link">
+            <div>
+              <h3 class="post-title">Yin vs. restorative: which one do you need?</h3>
+              <p class="post-teaser">They look similar from the door, but they work very differently. How to pick the right slow class for today.</p>
+            </div>
+            <span class="post-date">Jun 15, 2026</span>
+          </a>
+        </li>
+        <li class="card post-card">
+          <a href="#" class="post-link">
+            <div>
+              <h3 class="post-title">Breathing for deadlines: box breath at your desk</h3>
+              <p class="post-teaser">The two-minute breath pattern our teachers use before teaching — and why it works under pressure.</p>
+            </div>
+            <span class="post-date">Jun 5, 2026</span>
+          </a>
+        </li>
+        <li class="card post-card">
+          <a href="#" class="post-link">
+            <div>
+              <h3 class="post-title">How often should you actually practice?</h3>
+              <p class="post-teaser">The honest answer is less than Instagram says and more than never. Finding a rhythm that survives real life.</p>
+            </div>
+            <span class="post-date">May 27, 2026</span>
+          </a>
+        </li>
+        <li class="card post-card">
+          <a href="#" class="post-link">
+            <div>
+              <h3 class="post-title">Meet the teachers: Ana on slow flow</h3>
+              <p class="post-teaser">Why our slowest class is the hardest one she teaches, and what she wishes every student knew.</p>
+            </div>
+            <span class="post-date">May 18, 2026</span>
+          </a>
+        </li>
+      </ul>
+
+      <p class="blog-note">Full articles are publishing with our launch — check back soon.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-sub { color: var(--text-soft); margin-bottom: 2.5rem; }
+
+  .post-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .post-card { transition: transform 0.15s ease; }
+  .post-card:hover { transform: translateY(-2px); }
+
+  .post-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1.5rem;
+    padding: 1.4rem 1.6rem;
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .post-title { margin-bottom: 0.35rem; }
+
+  .post-link:hover .post-title { color: var(--purple-dark); }
+
+  .post-teaser { color: var(--text-soft); font-size: 0.95rem; margin: 0; max-width: 46rem; }
+
+  .post-date { color: var(--text-soft); font-size: 0.9rem; white-space: nowrap; padding-top: 0.2rem; }
+
+  .blog-note { margin-top: 2rem; color: var(--text-soft); font-style: italic; }
+
+  @media (max-width: 860px) {
+    .post-link { flex-direction: column; gap: 0.5rem; }
+  }
+</style>

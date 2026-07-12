@@ -1,0 +1,305 @@
+---
+import Base from '../layouts/Base.astro';
+
+const week = [
+  {
+    day: 'Monday',
+    date: 'Jul 13',
+    classes: [
+      { time: '7:00 AM', name: 'Sunrise Vinyasa', teacher: 'Marcus', studio: 'Downtown', level: 'All levels', spots: 8 },
+      { time: '12:15 PM', name: 'Lunch Flow Express · 45 min', teacher: 'Jules', studio: 'Downtown', level: 'Intermediate', spots: 5 },
+      { time: '6:00 PM', name: 'Slow Flow & Breathwork', teacher: 'Ana', studio: 'Riverside', level: 'All levels', spots: 10 },
+    ],
+  },
+  {
+    day: 'Tuesday',
+    date: 'Jul 14',
+    classes: [
+      { time: '9:30 AM', name: 'Gentle Hatha', teacher: 'Priya', studio: 'Riverside', level: 'Beginner', spots: 12 },
+      { time: '6:00 PM', name: 'Strong Flow', teacher: 'Theo', studio: 'Downtown', level: 'Intermediate', spots: 4 },
+      { time: '7:30 PM', name: 'Candlelight Yin', teacher: 'Sofia', studio: 'Riverside', level: 'All levels', spots: 7 },
+    ],
+  },
+  {
+    day: 'Wednesday',
+    date: 'Jul 15',
+    classes: [
+      { time: '7:00 AM', name: 'Sunrise Vinyasa', teacher: 'Marcus', studio: 'Downtown', level: 'All levels', spots: 6 },
+      { time: '12:15 PM', name: 'Lunch Flow Express · 45 min', teacher: 'Jules', studio: 'Downtown', level: 'Intermediate', spots: 9 },
+      { time: '6:00 PM', name: 'Yin & Restore', teacher: 'Sofia', studio: 'Riverside', level: 'All levels', spots: 11 },
+    ],
+  },
+  {
+    day: 'Thursday',
+    date: 'Jul 16',
+    classes: [
+      { time: '9:30 AM', name: 'Gentle Hatha', teacher: 'Priya', studio: 'Riverside', level: 'Beginner', spots: 12 },
+      { time: '6:00 PM', name: 'Power Vinyasa', teacher: 'Theo', studio: 'Downtown', level: 'Advanced', spots: 3 },
+    ],
+  },
+  {
+    day: 'Friday',
+    date: 'Jul 17',
+    classes: [
+      { time: '7:00 AM', name: 'Sunrise Vinyasa', teacher: 'Marcus', studio: 'Downtown', level: 'All levels', spots: 10 },
+      { time: '5:30 PM', name: 'Unwind: Deep Stretch', teacher: 'Sofia', studio: 'Riverside', level: 'All levels', spots: 8 },
+    ],
+  },
+  {
+    day: 'Saturday',
+    date: 'Jul 18',
+    classes: [
+      { time: '9:00 AM', name: 'Weekend Flow', teacher: 'Marcus', studio: 'Downtown', level: 'All levels', spots: 14 },
+      { time: '11:00 AM', name: "Beginners' Workshop · 90 min", teacher: 'Priya', studio: 'Riverside', level: 'Beginner', spots: 6 },
+    ],
+  },
+  {
+    day: 'Sunday',
+    date: 'Jul 19',
+    classes: [
+      { time: '10:00 AM', name: 'Slow Sunday Flow', teacher: 'Ana', studio: 'Riverside', level: 'All levels', spots: 9 },
+      { time: '5:00 PM', name: 'Restorative Reset', teacher: 'Sofia', studio: 'Downtown', level: 'All levels', spots: 12 },
+    ],
+  },
+];
+
+// Derive unique filter options from the data
+const teachers = [...new Set(week.flatMap((d) => d.classes.map((c) => c.teacher)))].sort();
+const studios = [...new Set(week.flatMap((d) => d.classes.map((c) => c.studio)))].sort();
+const levels = ['Beginner', 'All levels', 'Intermediate', 'Advanced'].filter((lvl) =>
+  week.some((d) => d.classes.some((c) => c.level === lvl))
+);
+---
+
+<Base title="Schedule — Yogis" description="Weekly class schedule at Yogis Downtown and Riverside. Filter by teacher, studio, and level, then book your spot.">
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Weekly schedule</span>
+      <h1>This week at Yogis</h1>
+      <p class="page-sub">Week of July 13–19 · All classes are 60 minutes unless noted. Drop-ins welcome.</p>
+
+      <div class="filter-bar card" role="group" aria-label="Filter classes">
+        <div class="filter-field">
+          <label for="f-teacher">Teacher</label>
+          <select id="f-teacher" data-filter="teacher">
+            <option value="">All teachers</option>
+            {teachers.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </div>
+        <div class="filter-field">
+          <label for="f-studio">Location</label>
+          <select id="f-studio" data-filter="studio">
+            <option value="">All locations</option>
+            {studios.map((s) => <option value={s}>{s}</option>)}
+          </select>
+        </div>
+        <div class="filter-field">
+          <label for="f-level">Level</label>
+          <select id="f-level" data-filter="level">
+            <option value="">All levels</option>
+            {levels.map((l) => <option value={l}>{l}</option>)}
+          </select>
+        </div>
+        <button type="button" id="f-clear" class="btn btn-ghost btn-sm filter-clear" hidden>Clear filters</button>
+        <p id="f-count" class="filter-count" aria-live="polite"></p>
+      </div>
+
+      <div id="schedule-list">
+        {week.map((d) => (
+          <div class="day-block" data-day>
+            <h3 class="day-head">{d.day} <span>{d.date}</span></h3>
+            <ul class="class-list">
+              {d.classes.map((c) => (
+                <li
+                  class="class-row card"
+                  data-class
+                  data-teacher={c.teacher}
+                  data-studio={c.studio}
+                  data-level={c.level}
+                >
+                  <span class="class-time">{c.time}</span>
+                  <span class="class-name">{c.name}</span>
+                  <span class="class-meta">with {c.teacher} · {c.studio} · {c.level}</span>
+                  <span class="class-spots">{c.spots} spots left</span>
+                  <a href="/login" class="btn btn-primary btn-sm">Book</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        <p id="f-empty" class="filter-empty" hidden>No classes match those filters. Try clearing one.</p>
+      </div>
+
+      <div class="schedule-note card">
+        <p><strong>Pricing:</strong> drop-in $22 · 5-class pack $95 · 10-class pack $170 · unlimited month $129. First week unlimited for new students: <strong>$25</strong>.</p>
+        <a href="/new-to-yogis" class="btn btn-ghost">New here? Start here</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const selects = document.querySelectorAll('select[data-filter]');
+    const rows = document.querySelectorAll('[data-class]');
+    const days = document.querySelectorAll('[data-day]');
+    const clearBtn = document.getElementById('f-clear');
+    const countEl = document.getElementById('f-count');
+    const emptyEl = document.getElementById('f-empty');
+
+    function apply() {
+      const active = {};
+      selects.forEach((s) => { if (s.value) active[s.dataset.filter] = s.value; });
+      const hasFilters = Object.keys(active).length > 0;
+
+      let visible = 0;
+      rows.forEach((row) => {
+        const match = Object.entries(active).every(
+          ([key, val]) => row.dataset[key] === val
+        );
+        row.hidden = !match;
+        if (match) visible++;
+      });
+
+      // Hide day headers whose classes are all filtered out
+      days.forEach((day) => {
+        const anyVisible = day.querySelector('[data-class]:not([hidden])');
+        day.hidden = !anyVisible;
+      });
+
+      emptyEl.hidden = visible !== 0;
+      clearBtn.hidden = !hasFilters;
+      countEl.textContent = hasFilters
+        ? `Showing ${visible} ${visible === 1 ? 'class' : 'classes'}`
+        : '';
+    }
+
+    selects.forEach((s) => s.addEventListener('change', apply));
+    clearBtn.addEventListener('click', () => {
+      selects.forEach((s) => { s.value = ''; });
+      apply();
+    });
+  </script>
+</Base>
+
+<style>
+  .page-sub { color: var(--text-soft); margin-bottom: 2rem; }
+
+  /* ===== Filter bar ===== */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 1.1rem;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 2.5rem;
+    background: var(--white);
+  }
+
+  .filter-field { display: grid; gap: 0.35rem; }
+
+  .filter-field label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--purple-dark);
+  }
+
+  .filter-field select {
+    appearance: none;
+    padding: 0.6rem 2.2rem 0.6rem 0.9rem;
+    border: 1.5px solid var(--blue);
+    border-radius: 10px;
+    background: var(--white);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B5FA8' d='M6 8 0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text);
+    cursor: pointer;
+    min-width: 10.5rem;
+  }
+
+  .filter-field select:focus {
+    outline: none;
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(151, 143, 196, 0.25);
+  }
+
+  .filter-clear { margin-bottom: 0.05rem; }
+  .filter-clear[hidden] { display: none; }
+
+  .filter-count {
+    margin: 0 0 0.15rem auto;
+    align-self: end;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+
+  /* ===== Day + class rows ===== */
+  .day-block { margin-bottom: 2.2rem; }
+
+  .day-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .day-head span { font-family: var(--font-body); font-size: 0.95rem; color: var(--text-soft); font-weight: 400; }
+
+  .class-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.9rem; }
+
+  .class-row {
+    display: grid;
+    grid-template-columns: 90px 1.1fr 1.1fr auto auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.4rem;
+  }
+
+  .class-row[hidden] { display: none; }
+  .day-block[hidden] { display: none; }
+
+  .class-time { font-weight: 700; color: var(--purple-dark); }
+  .class-name { font-weight: 600; }
+  .class-meta { color: var(--text-soft); font-size: 0.92rem; }
+  .class-spots { font-size: 0.88rem; color: var(--text-soft); }
+  .btn-sm { padding: 0.5rem 1.1rem; font-size: 0.88rem; }
+
+  .filter-empty {
+    padding: 2rem 0;
+    text-align: center;
+    color: var(--text-soft);
+    font-style: italic;
+  }
+
+  .schedule-note {
+    margin-top: 3rem;
+    padding: 1.5rem 1.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    background: var(--blue);
+  }
+
+  .schedule-note p { margin: 0; max-width: 40rem; }
+
+  @media (max-width: 860px) {
+    .filter-field { flex: 1 1 100%; }
+    .filter-field select { width: 100%; }
+    .filter-count { margin-left: 0; }
+
+    .class-row {
+      grid-template-columns: 1fr auto;
+      grid-template-areas: 'time book' 'name book' 'meta book' 'spots book';
+    }
+    .class-time { grid-area: time; }
+    .class-name { grid-area: name; }
+    .class-meta { grid-area: meta; }
+    .class-spots { grid-area: spots; }
+    .class-row .btn { grid-area: book; align-self: center; }
+  }
+</style>

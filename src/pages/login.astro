@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Log in — Yogis" description="Log in to your Yogis account to book classes and access your courses.">
+  <section class="section">
+    <div class="container login-wrap">
+      <div class="card login-card">
+        <h1>Welcome back</h1>
+        <p class="login-sub">Log in to book classes and access your courses.</p>
+
+        <form class="login-form">
+          <label for="email">Email</label>
+          <input id="email" type="email" name="email" autocomplete="email" placeholder="you@example.com" />
+
+          <label for="password">Password</label>
+          <input id="password" type="password" name="password" autocomplete="current-password" placeholder="••••••••" />
+
+          <button type="button" class="btn btn-primary login-btn" disabled>Log in</button>
+        </form>
+
+        <p class="login-note">
+          Member accounts open with our full launch. Meanwhile, learn
+          <a href="/new-to-yogis">how to get started</a> or browse
+          <a href="/courses">online courses</a>.
+        </p>
+      </div>
+
+      <div class="login-side">
+        <h2>Why make an account?</h2>
+        <ul class="perk-list">
+          <li>Book and cancel classes in two taps</li>
+          <li>Keep your class packs and membership in one place</li>
+          <li>Stream your purchased courses on any device</li>
+          <li>Get early access when workshops open</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .login-wrap {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr;
+    gap: 3rem;
+    align-items: center;
+    max-width: 900px;
+  }
+
+  .login-card { padding: 2.5rem 2.5rem 2rem; }
+
+  .login-sub { color: var(--text-soft); margin-bottom: 1.8rem; }
+
+  .login-form { display: grid; gap: 0.4rem; }
+
+  .login-form label { font-weight: 600; font-size: 0.92rem; }
+
+  .login-form input {
+    padding: 0.75rem 0.9rem;
+    border: 1.5px solid var(--blue);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    background: var(--white);
+    color: var(--text);
+    margin-bottom: 0.9rem;
+  }
+
+  .login-form input:focus {
+    outline: none;
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(151, 143, 196, 0.25);
+  }
+
+  .login-btn { margin-top: 0.4rem; }
+
+  .login-btn[disabled] { opacity: 0.55; cursor: not-allowed; }
+
+  .login-note {
+    margin: 1.4rem 0 0;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+
+  .login-side h2 { font-size: 1.4rem; }
+
+  .perk-list {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: var(--text-soft);
+    display: grid;
+    gap: 0.6rem;
+    font-size: 0.97rem;
+  }
+
+  @media (max-width: 860px) {
+    .login-wrap { grid-template-columns: 1fr; }
+  }
+</style>

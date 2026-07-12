@@ -1,0 +1,134 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="New to Yogis — Start Here" description="New to yoga or new to Yogis? Your first week of unlimited classes for $25. What to expect, what to bring, and how to start.">
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">New to Yogis?</span>
+      <h1>Start here — everyone did once</h1>
+      <p class="page-sub">
+        No experience, flexibility, or fancy leggings required. Here's everything
+        you need for a great first visit.
+      </p>
+
+      <div class="offer card">
+        <div>
+          <h2>First week unlimited — $25</h2>
+          <p>
+            Try every class, every teacher, both studios for seven days. We'll help you
+            find the style that fits before you commit to anything.
+          </p>
+        </div>
+        <a href="/login" class="btn btn-primary">Claim your week</a>
+      </div>
+
+      <h2 class="steps-head">Your first class in three steps</h2>
+      <div class="grid-3">
+        <div class="step">
+          <span class="step-num">1</span>
+          <h3>Pick a class</h3>
+          <p>Anything marked <em>Beginner</em> or <em>All levels</em> is a great start. Gentle Hatha and Slow Flow are favorites.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <h3>Arrive 15 minutes early</h3>
+          <p>We'll show you around, set you up with a mat and towel (free on your first visit), and introduce your teacher.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <h3>Do what you can</h3>
+          <p>Rest whenever you like. Every pose has an easier version, and your teacher will offer it without making it weird.</p>
+        </div>
+      </div>
+
+      <h2 class="faq-head">Common questions</h2>
+      <div class="faq">
+        <details class="card">
+          <summary>I'm not flexible. Can I still do yoga?</summary>
+          <p>Yes — that's what the yoga is for. Flexibility is a result of practice, not a requirement to start. Most people in any beginner class can't touch their toes.</p>
+        </details>
+        <details class="card">
+          <summary>What should I bring and wear?</summary>
+          <p>Comfortable clothes you can move in and a water bottle. Mats and towels are free on your first visit and rentable after ($2). Practice is barefoot.</p>
+        </details>
+        <details class="card">
+          <summary>How does the $25 intro week work?</summary>
+          <p>It starts the day of your first class and covers unlimited classes at both studios for 7 days. After it ends, choose a class pack or membership — or don't, no pressure.</p>
+        </details>
+        <details class="card">
+          <summary>Can I just do the online courses instead?</summary>
+          <p>Absolutely. <a href="/courses">Foundations of Yoga</a> was designed for people starting at home — 21 short daily classes from the same teachers.</p>
+        </details>
+      </div>
+
+      <div class="cta-band card">
+        <h2>Ready when you are</h2>
+        <p>Check this week's schedule and pick your first class.</p>
+        <a href="/schedule" class="btn btn-light">See the schedule</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page-sub { color: var(--text-soft); max-width: 40rem; margin-bottom: 2.5rem; }
+
+  .offer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem 2.2rem;
+    background: var(--lavender);
+    margin-bottom: 3.5rem;
+  }
+
+  .offer p { margin: 0; max-width: 36rem; }
+
+  .steps-head { margin-bottom: 1.5rem; }
+
+  .step { padding: 0 0.5rem; }
+
+  .step-num {
+    display: inline-grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: var(--text);
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .step p { color: var(--text-soft); font-size: 0.95rem; }
+
+  .faq-head { margin: 3rem 0 1.2rem; }
+
+  .faq { display: grid; gap: 0.9rem; }
+
+  .faq details { padding: 1.1rem 1.4rem; }
+
+  .faq summary {
+    font-weight: 600;
+    cursor: pointer;
+    list-style-position: outside;
+  }
+
+  .faq details[open] summary { color: var(--purple-dark); }
+
+  .faq details p { margin: 0.8rem 0 0.2rem; color: var(--text-soft); font-size: 0.96rem; }
+
+  .cta-band {
+    margin-top: 3.5rem;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    background: linear-gradient(120deg, var(--purple) 0%, var(--purple-dark) 100%);
+    color: var(--white);
+  }
+
+  .cta-band p { opacity: 0.9; }
+</style>
