@@ -1,74 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-
-const week = [
-  {
-    day: 'Monday',
-    date: 'Jul 13',
-    classes: [
-      { time: '7:00 AM', name: 'Sunrise Vinyasa', teacher: 'Marcus', studio: 'Downtown', level: 'All levels', spots: 8 },
-      { time: '12:15 PM', name: 'Lunch Flow Express · 45 min', teacher: 'Jules', studio: 'Downtown', level: 'Intermediate', spots: 5 },
-      { time: '6:00 PM', name: 'Slow Flow & Breathwork', teacher: 'Ana', studio: 'Riverside', level: 'All levels', spots: 10 },
-    ],
-  },
-  {
-    day: 'Tuesday',
-    date: 'Jul 14',
-    classes: [
-      { time: '9:30 AM', name: 'Gentle Hatha', teacher: 'Priya', studio: 'Riverside', level: 'Beginner', spots: 12 },
-      { time: '6:00 PM', name: 'Strong Flow', teacher: 'Theo', studio: 'Downtown', level: 'Intermediate', spots: 4 },
-      { time: '7:30 PM', name: 'Candlelight Yin', teacher: 'Sofia', studio: 'Riverside', level: 'All levels', spots: 7 },
-    ],
-  },
-  {
-    day: 'Wednesday',
-    date: 'Jul 15',
-    classes: [
-      { time: '7:00 AM', name: 'Sunrise Vinyasa', teacher: 'Marcus', studio: 'Downtown', level: 'All levels', spots: 6 },
-      { time: '12:15 PM', name: 'Lunch Flow Express · 45 min', teacher: 'Jules', studio: 'Downtown', level: 'Intermediate', spots: 9 },
-      { time: '6:00 PM', name: 'Yin & Restore', teacher: 'Sofia', studio: 'Riverside', level: 'All levels', spots: 11 },
-    ],
-  },
-  {
-    day: 'Thursday',
-    date: 'Jul 16',
-    classes: [
-      { time: '9:30 AM', name: 'Gentle Hatha', teacher: 'Priya', studio: 'Riverside', level: 'Beginner', spots: 12 },
-      { time: '6:00 PM', name: 'Power Vinyasa', teacher: 'Theo', studio: 'Downtown', level: 'Advanced', spots: 3 },
-    ],
-  },
-  {
-    day: 'Friday',
-    date: 'Jul 17',
-    classes: [
-      { time: '7:00 AM', name: 'Sunrise Vinyasa', teacher: 'Marcus', studio: 'Downtown', level: 'All levels', spots: 10 },
-      { time: '5:30 PM', name: 'Unwind: Deep Stretch', teacher: 'Sofia', studio: 'Riverside', level: 'All levels', spots: 8 },
-    ],
-  },
-  {
-    day: 'Saturday',
-    date: 'Jul 18',
-    classes: [
-      { time: '9:00 AM', name: 'Weekend Flow', teacher: 'Marcus', studio: 'Downtown', level: 'All levels', spots: 14 },
-      { time: '11:00 AM', name: "Beginners' Workshop · 90 min", teacher: 'Priya', studio: 'Riverside', level: 'Beginner', spots: 6 },
-    ],
-  },
-  {
-    day: 'Sunday',
-    date: 'Jul 19',
-    classes: [
-      { time: '10:00 AM', name: 'Slow Sunday Flow', teacher: 'Ana', studio: 'Riverside', level: 'All levels', spots: 9 },
-      { time: '5:00 PM', name: 'Restorative Reset', teacher: 'Sofia', studio: 'Downtown', level: 'All levels', spots: 12 },
-    ],
-  },
-];
-
-// Derive unique filter options from the data
-const teachers = [...new Set(week.flatMap((d) => d.classes.map((c) => c.teacher)))].sort();
-const studios = [...new Set(week.flatMap((d) => d.classes.map((c) => c.studio)))].sort();
-const levels = ['Beginner', 'All levels', 'Intermediate', 'Advanced'].filter((lvl) =>
-  week.some((d) => d.classes.some((c) => c.level === lvl))
-);
 ---
 
 <Base title="Schedule — Yogis" description="Weekly class schedule at Yogis Downtown and Riverside. Filter by teacher, studio, and level, then book your spot.">
@@ -76,58 +7,27 @@ const levels = ['Beginner', 'All levels', 'Intermediate', 'Advanced'].filter((lv
     <div class="container">
       <span class="eyebrow">Weekly schedule</span>
       <h1>This week at Yogis</h1>
-      <p class="page-sub">Week of July 13–19 · All classes are 60 minutes unless noted. Drop-ins welcome.</p>
+      <p class="page-sub">All classes are 60 minutes unless noted. Drop-ins welcome.</p>
 
       <div class="filter-bar card" role="group" aria-label="Filter classes">
         <div class="filter-field">
           <label for="f-teacher">Teacher</label>
-          <select id="f-teacher" data-filter="teacher">
-            <option value="">All teachers</option>
-            {teachers.map((t) => <option value={t}>{t}</option>)}
-          </select>
+          <select id="f-teacher" data-filter="teacher"><option value="">All teachers</option></select>
         </div>
         <div class="filter-field">
           <label for="f-studio">Location</label>
-          <select id="f-studio" data-filter="studio">
-            <option value="">All locations</option>
-            {studios.map((s) => <option value={s}>{s}</option>)}
-          </select>
+          <select id="f-studio" data-filter="studio"><option value="">All locations</option></select>
         </div>
         <div class="filter-field">
           <label for="f-level">Level</label>
-          <select id="f-level" data-filter="level">
-            <option value="">All levels</option>
-            {levels.map((l) => <option value={l}>{l}</option>)}
-          </select>
+          <select id="f-level" data-filter="level"><option value="">Any level</option></select>
         </div>
         <button type="button" id="f-clear" class="btn btn-ghost btn-sm filter-clear" hidden>Clear filters</button>
         <p id="f-count" class="filter-count" aria-live="polite"></p>
       </div>
 
       <div id="schedule-list">
-        {week.map((d) => (
-          <div class="day-block" data-day>
-            <h3 class="day-head">{d.day} <span>{d.date}</span></h3>
-            <ul class="class-list">
-              {d.classes.map((c) => (
-                <li
-                  class="class-row card"
-                  data-class
-                  data-teacher={c.teacher}
-                  data-studio={c.studio}
-                  data-level={c.level}
-                >
-                  <span class="class-time">{c.time}</span>
-                  <span class="class-name">{c.name}</span>
-                  <span class="class-meta">with {c.teacher} · {c.studio} · {c.level}</span>
-                  <span class="class-spots">{c.spots} spots left</span>
-                  <a href="/login" class="btn btn-primary btn-sm">Book</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-        <p id="f-empty" class="filter-empty" hidden>No classes match those filters. Try clearing one.</p>
+        <p id="sched-status" class="sched-status">Loading this week’s classes…</p>
       </div>
 
       <div class="schedule-note card">
@@ -138,50 +38,144 @@ const levels = ['Beginner', 'All levels', 'Intermediate', 'Advanced'].filter((lv
   </section>
 
   <script>
+    import { supabase } from '../lib/supabase.js';
+
+    const listEl = document.getElementById('schedule-list');
+    const statusEl = document.getElementById('sched-status');
     const selects = document.querySelectorAll('select[data-filter]');
-    const rows = document.querySelectorAll('[data-class]');
-    const days = document.querySelectorAll('[data-day]');
     const clearBtn = document.getElementById('f-clear');
     const countEl = document.getElementById('f-count');
-    const emptyEl = document.getElementById('f-empty');
 
-    function apply() {
-      const active = {};
-      selects.forEach((s) => { if (s.value) active[s.dataset.filter] = s.value; });
-      const hasFilters = Object.keys(active).length > 0;
+    const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]
+    ));
+    const fmtTime = (iso) =>
+      new Date(iso).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: 'UTC' });
+    const dayLabel = (iso) =>
+      new Date(iso).toLocaleDateString('en-US', { weekday: 'long', timeZone: 'UTC' });
+    const dateLabel = (iso) =>
+      new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+    const uniqueSorted = (arr) => [...new Set(arr.filter(Boolean))].sort();
 
-      let visible = 0;
-      rows.forEach((row) => {
-        const match = Object.entries(active).every(
-          ([key, val]) => row.dataset[key] === val
-        );
-        row.hidden = !match;
-        if (match) visible++;
-      });
+    async function load() {
+      if (!supabase) {
+        statusEl.textContent = 'Schedule isn’t configured yet.';
+        return;
+      }
 
-      // Hide day headers whose classes are all filtered out
-      days.forEach((day) => {
-        const anyVisible = day.querySelector('[data-class]:not([hidden])');
-        day.hidden = !anyVisible;
-      });
+      const [sessionsRes, availRes] = await Promise.all([
+        supabase
+          .from('sessions')
+          .select('id, starts_at, duration_min, capacity, classes(name, level), teachers(name), studios(name)')
+          .order('starts_at'),
+        supabase.from('session_availability').select('session_id, spots_left'),
+      ]);
 
-      emptyEl.hidden = visible !== 0;
-      clearBtn.hidden = !hasFilters;
-      countEl.textContent = hasFilters
-        ? `Showing ${visible} ${visible === 1 ? 'class' : 'classes'}`
-        : '';
+      if (sessionsRes.error) {
+        statusEl.textContent = 'Sorry — could not load the schedule.';
+        console.error(sessionsRes.error);
+        return;
+      }
+      const sessions = sessionsRes.data || [];
+      if (!sessions.length) {
+        statusEl.textContent = 'No classes scheduled yet.';
+        return;
+      }
+      const spotsById = Object.fromEntries((availRes.data || []).map((a) => [a.session_id, a.spots_left]));
+
+      // Group by calendar day (data is already ordered by start time)
+      const order = [];
+      const byDay = {};
+      for (const s of sessions) {
+        const key = s.starts_at.slice(0, 10);
+        if (!byDay[key]) {
+          byDay[key] = { label: dayLabel(s.starts_at), date: dateLabel(s.starts_at), items: [] };
+          order.push(key);
+        }
+        byDay[key].items.push(s);
+      }
+
+      let html = '';
+      for (const key of order) {
+        const d = byDay[key];
+        html += `<div class="day-block" data-day><h3 class="day-head">${esc(d.label)} <span>${esc(d.date)}</span></h3><ul class="class-list">`;
+        for (const s of d.items) {
+          const cls = s.classes || {};
+          const teacher = s.teachers?.name || 'TBA';
+          const studio = s.studios?.name || '';
+          const level = cls.level || '';
+          const dur = s.duration_min && s.duration_min !== 60 ? ` · ${s.duration_min} min` : '';
+          const spots = spotsById[s.id] ?? s.capacity;
+          html += `<li class="class-row card" data-class data-teacher="${esc(teacher)}" data-studio="${esc(studio)}" data-level="${esc(level)}">
+            <span class="class-time">${esc(fmtTime(s.starts_at))}</span>
+            <span class="class-name">${esc(cls.name)}${esc(dur)}</span>
+            <span class="class-meta">with ${esc(teacher)} · ${esc(studio)} · ${esc(level)}</span>
+            <span class="class-spots">${esc(spots)} spots left</span>
+            <a href="/login" class="btn btn-primary btn-sm">Book</a>
+          </li>`;
+        }
+        html += `</ul></div>`;
+      }
+      html += `<p id="f-empty" class="filter-empty" hidden>No classes match those filters. Try clearing one.</p>`;
+      listEl.innerHTML = html;
+
+      populateFilters(sessions);
+      wireFilters();
     }
 
-    selects.forEach((s) => s.addEventListener('change', apply));
-    clearBtn.addEventListener('click', () => {
-      selects.forEach((s) => { s.value = ''; });
-      apply();
-    });
+    function populateFilters(sessions) {
+      const teachers = uniqueSorted(sessions.map((s) => s.teachers?.name));
+      const studios = uniqueSorted(sessions.map((s) => s.studios?.name));
+      const levelOrder = ['Beginner', 'All levels', 'Intermediate', 'Advanced'];
+      const levels = levelOrder.filter((l) => sessions.some((s) => s.classes?.level === l));
+      fill('f-teacher', teachers);
+      fill('f-studio', studios);
+      fill('f-level', levels);
+    }
+
+    function fill(id, values) {
+      const sel = document.getElementById(id);
+      for (const v of values) {
+        const o = document.createElement('option');
+        o.value = v;
+        o.textContent = v;
+        sel.appendChild(o);
+      }
+    }
+
+    function wireFilters() {
+      const rows = listEl.querySelectorAll('[data-class]');
+      const dayBlocks = listEl.querySelectorAll('[data-day]');
+      const emptyEl = document.getElementById('f-empty');
+
+      function apply() {
+        const active = {};
+        selects.forEach((s) => { if (s.value) active[s.dataset.filter] = s.value; });
+        const hasFilters = Object.keys(active).length > 0;
+        let visible = 0;
+        rows.forEach((r) => {
+          const match = Object.entries(active).every(([k, v]) => r.dataset[k] === v);
+          r.hidden = !match;
+          if (match) visible++;
+        });
+        dayBlocks.forEach((d) => { d.hidden = !d.querySelector('[data-class]:not([hidden])'); });
+        if (emptyEl) emptyEl.hidden = visible !== 0;
+        clearBtn.hidden = !hasFilters;
+        countEl.textContent = hasFilters ? `Showing ${visible} ${visible === 1 ? 'class' : 'classes'}` : '';
+      }
+
+      selects.forEach((s) => s.addEventListener('change', apply));
+      clearBtn.addEventListener('click', () => { selects.forEach((s) => { s.value = ''; }); apply(); });
+    }
+
+    load();
   </script>
 </Base>
 
 <style>
   .page-sub { color: var(--text-soft); margin-bottom: 2rem; }
+
+  .sched-status { color: var(--text-soft); padding: 1.5rem 0; }
 
   /* ===== Filter bar ===== */
   .filter-bar {
