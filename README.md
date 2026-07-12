@@ -2,7 +2,7 @@
 
 Marketing + booking site for the Yogis yoga studio. Built with [Astro](https://astro.build), deployed on Cloudflare Pages.
 
-Live: https://yogis-3lj.pages.dev
+Live: https://yogis-site.pages.dev
 
 ## Develop
 
@@ -20,7 +20,7 @@ npm run preview    # preview the production build locally
 
 ## Deploy
 
-Deploys happen automatically: every push to `main` triggers a Cloudflare Pages build.
+Deploys happen automatically: every push to `master` triggers a Cloudflare Pages build.
 
 - **Framework preset:** Astro
 - **Build command:** `npm run build`
