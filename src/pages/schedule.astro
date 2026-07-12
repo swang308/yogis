@@ -172,7 +172,9 @@ import Base from '../layouts/Base.astro';
   </script>
 </Base>
 
-<style>
+<style is:global>
+  /* is:global — the schedule rows are injected by JS at runtime, so Astro's
+     default scoped styles would not apply to them. */
   .page-sub { color: var(--text-soft); margin-bottom: 2rem; }
 
   .sched-status { color: var(--text-soft); padding: 1.5rem 0; }
