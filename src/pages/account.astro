@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Your account — Yogis" description="Manage your Yogis account, bookings, and courses.">
+  <section class="section">
+    <div class="container account-wrap">
+      <p id="acct-loading" class="acct-status">Loading your account…</p>
+
+      <div id="acct" hidden>
+        <span class="eyebrow">Your account</span>
+        <h1 id="acct-hello">Hi there</h1>
+        <p class="acct-email"><span id="acct-email"></span> · <a href="#" id="signout-link">Sign out</a></p>
+
+        <div class="grid-2 acct-cards">
+          <div class="card acct-card">
+            <h3>Your bookings</h3>
+            <p id="acct-bookings" class="acct-muted">No bookings yet. Class booking opens soon — for now, drop in or call the studio.</p>
+            <a href="/schedule" class="btn btn-ghost">See the schedule</a>
+          </div>
+          <div class="card acct-card">
+            <h3>Your courses</h3>
+            <p class="acct-muted">No courses yet. Online course purchases are coming with our full launch.</p>
+            <a href="/courses" class="btn btn-ghost">Browse courses</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { supabase } from '../lib/supabase.js';
+
+    const loading = document.getElementById('acct-loading');
+
+    async function init() {
+      if (!supabase) { window.location.replace('/login'); return; }
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) { window.location.replace('/login'); return; }
+
+      const user = session.user;
+      document.getElementById('acct-email').textContent = user.email;
+
+      // Profile row (auto-created at signup by the DB trigger)
+      const { data: member } = await supabase
+        .from('members')
+        .select('full_name')
+        .eq('id', user.id)
+        .maybeSingle();
+      const name = member?.full_name || user.user_metadata?.full_name || '';
+      document.getElementById('acct-hello').textContent = name ? `Hi, ${name}` : 'Hi there';
+
+      // Bookings (empty until booking launches)
+      const { data: bookings } = await supabase
+        .from('bookings')
+        .select('id')
+        .eq('status', 'booked');
+      if (bookings && bookings.length) {
+        document.getElementById('acct-bookings').textContent =
+          `You have ${bookings.length} upcoming ${bookings.length === 1 ? 'booking' : 'bookings'}.`;
+      }
+
+      loading.hidden = true;
+      document.getElementById('acct').hidden = false;
+    }
+
+    document.getElementById('signout-link').addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (supabase) await supabase.auth.signOut();
+      window.location.href = '/';
+    });
+
+    init();
+  </script>
+</Base>
+
+<style>
+  .account-wrap { max-width: 900px; }
+
+  .acct-status { color: var(--text-soft); padding: 2rem 0; }
+
+  .acct-email { color: var(--text-soft); margin-bottom: 2rem; }
+
+  .acct-cards { margin-top: 1rem; }
+
+  .acct-card { padding: 1.6rem 1.8rem 1.8rem; }
+
+  .acct-muted { color: var(--text-soft); font-size: 0.95rem; }
+
+  .acct-card .btn { margin-top: 0.6rem; }
+</style>

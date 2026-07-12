@@ -6,24 +6,35 @@ import Base from '../layouts/Base.astro';
   <section class="section">
     <div class="container login-wrap">
       <div class="card login-card">
-        <h1>Welcome back</h1>
-        <p class="login-sub">Log in to book classes and access your courses.</p>
+        <div class="mode-tabs" role="tablist">
+          <button type="button" id="tab-signin" class="mode-tab active">Log in</button>
+          <button type="button" id="tab-signup" class="mode-tab">Create account</button>
+        </div>
 
-        <form class="login-form">
-          <label for="email">Email</label>
-          <input id="email" type="email" name="email" autocomplete="email" placeholder="you@example.com" />
-
-          <label for="password">Password</label>
-          <input id="password" type="password" name="password" autocomplete="current-password" placeholder="••••••••" />
-
-          <button type="button" class="btn btn-primary login-btn" disabled>Log in</button>
+        <!-- Sign in -->
+        <form id="form-signin" class="login-form">
+          <h1>Welcome back</h1>
+          <label for="si-email">Email</label>
+          <input id="si-email" type="email" autocomplete="email" placeholder="you@example.com" required />
+          <label for="si-password">Password</label>
+          <input id="si-password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+          <button type="submit" class="btn btn-primary login-btn">Log in</button>
+          <p class="login-alt"><a href="#" id="forgot-link">Forgot your password?</a></p>
         </form>
 
-        <p class="login-note">
-          Member accounts open with our full launch. Meanwhile, learn
-          <a href="/new-to-yogis">how to get started</a> or browse
-          <a href="/courses">online courses</a>.
-        </p>
+        <!-- Sign up -->
+        <form id="form-signup" class="login-form" hidden>
+          <h1>Join Yogis</h1>
+          <label for="su-name">Name</label>
+          <input id="su-name" type="text" autocomplete="name" placeholder="Your name" required />
+          <label for="su-email">Email</label>
+          <input id="su-email" type="email" autocomplete="email" placeholder="you@example.com" required />
+          <label for="su-password">Password</label>
+          <input id="su-password" type="password" autocomplete="new-password" placeholder="At least 8 characters" minlength="8" required />
+          <button type="submit" class="btn btn-primary login-btn">Create account</button>
+        </form>
+
+        <p id="auth-msg" class="auth-msg" hidden></p>
       </div>
 
       <div class="login-side">
@@ -37,6 +48,100 @@ import Base from '../layouts/Base.astro';
       </div>
     </div>
   </section>
+
+  <script>
+    import { supabase } from '../lib/supabase.js';
+
+    const tabIn = document.getElementById('tab-signin');
+    const tabUp = document.getElementById('tab-signup');
+    const formIn = document.getElementById('form-signin');
+    const formUp = document.getElementById('form-signup');
+    const msg = document.getElementById('auth-msg');
+
+    function show(mode) {
+      const signin = mode === 'signin';
+      formIn.hidden = !signin;
+      formUp.hidden = signin;
+      tabIn.classList.toggle('active', signin);
+      tabUp.classList.toggle('active', !signin);
+      hideMsg();
+    }
+    tabIn.addEventListener('click', () => show('signin'));
+    tabUp.addEventListener('click', () => show('signup'));
+
+    function setMsg(text, kind) {
+      msg.textContent = text;
+      msg.className = `auth-msg ${kind}`;
+      msg.hidden = false;
+    }
+    function hideMsg() { msg.hidden = true; }
+
+    // Already signed in? Go to the account page.
+    if (supabase) {
+      supabase.auth.getSession().then(({ data }) => {
+        if (data.session) window.location.replace('/account');
+      });
+    }
+
+    // Arriving from the email confirmation link
+    if (new URLSearchParams(window.location.search).get('confirmed')) {
+      setMsg('Email confirmed — you can log in now.', 'ok');
+    }
+
+    formIn.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!supabase) return setMsg('Accounts aren’t configured yet.', 'err');
+      hideMsg();
+      const { error } = await supabase.auth.signInWithPassword({
+        email: document.getElementById('si-email').value.trim(),
+        password: document.getElementById('si-password').value,
+      });
+      if (error) return setMsg(friendly(error), 'err');
+      window.location.href = '/account';
+    });
+
+    formUp.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!supabase) return setMsg('Accounts aren’t configured yet.', 'err');
+      hideMsg();
+      const { data, error } = await supabase.auth.signUp({
+        email: document.getElementById('su-email').value.trim(),
+        password: document.getElementById('su-password').value,
+        options: {
+          data: { full_name: document.getElementById('su-name').value.trim() },
+          emailRedirectTo: `${window.location.origin}/login?confirmed=1`,
+        },
+      });
+      if (error) return setMsg(friendly(error), 'err');
+      if (data.session) {
+        // Email confirmation disabled -> signed in immediately
+        window.location.href = '/account';
+      } else {
+        setMsg('Almost there — check your email and click the confirmation link.', 'ok');
+      }
+    });
+
+    document.getElementById('forgot-link').addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (!supabase) return setMsg('Accounts aren’t configured yet.', 'err');
+      const email = document.getElementById('si-email').value.trim();
+      if (!email) return setMsg('Type your email above first, then click “Forgot”.', 'err');
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) return setMsg(friendly(error), 'err');
+      setMsg('Password reset email sent — check your inbox.', 'ok');
+    });
+
+    function friendly(error) {
+      const m = error?.message || 'Something went wrong.';
+      if (/invalid login credentials/i.test(m)) return 'Wrong email or password.';
+      if (/already registered/i.test(m)) return 'That email already has an account — try logging in.';
+      if (/rate limit/i.test(m)) return 'Too many emails sent — wait a bit and try again.';
+      if (/not confirmed/i.test(m)) return 'Please confirm your email first — check your inbox.';
+      return m;
+    }
+  </script>
 </Base>
 
 <style>
@@ -48,9 +153,33 @@ import Base from '../layouts/Base.astro';
     max-width: 900px;
   }
 
-  .login-card { padding: 2.5rem 2.5rem 2rem; }
+  .login-card { padding: 2rem 2.5rem 2rem; }
 
-  .login-sub { color: var(--text-soft); margin-bottom: 1.8rem; }
+  .mode-tabs {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 1.6rem;
+    background: var(--cream);
+    border-radius: 999px;
+    padding: 0.3rem;
+  }
+
+  .mode-tab {
+    flex: 1;
+    padding: 0.55rem 1rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-soft);
+    cursor: pointer;
+  }
+
+  .mode-tab.active { background: var(--purple-dark); color: var(--white); }
+
+  .login-form h1 { font-size: 1.7rem; margin-bottom: 1rem; }
 
   .login-form { display: grid; gap: 0.4rem; }
 
@@ -75,13 +204,18 @@ import Base from '../layouts/Base.astro';
 
   .login-btn { margin-top: 0.4rem; }
 
-  .login-btn[disabled] { opacity: 0.55; cursor: not-allowed; }
+  .login-alt { margin: 1rem 0 0; font-size: 0.9rem; }
 
-  .login-note {
-    margin: 1.4rem 0 0;
-    font-size: 0.9rem;
-    color: var(--text-soft);
+  .auth-msg {
+    margin: 1.2rem 0 0;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    font-size: 0.93rem;
   }
+
+  .auth-msg.ok { background: var(--blue); color: var(--text); }
+  .auth-msg.err { background: #F3D9D9; color: #7A3B3B; }
+  .auth-msg[hidden] { display: none; }
 
   .login-side h2 { font-size: 1.4rem; }
 

@@ -46,7 +46,7 @@ const nav = [
           </ul>
         </nav>
         <div class="header-actions">
-          <a href="/login" class="login-link">Log in</a>
+          <a href="/login" class="login-link" id="nav-auth">Log in</a>
           <a href="/schedule" class="btn btn-primary btn-sm">Book a class</a>
         </div>
       </div>
@@ -55,6 +55,29 @@ const nav = [
     <main>
       <slot />
     </main>
+
+    <script is:inline>
+      // Swap "Log in" -> "Account" when a Supabase session exists.
+      // Reads the token from localStorage directly so non-auth pages don't
+      // need to load the Supabase client.
+      (function () {
+        try {
+          var link = document.getElementById('nav-auth');
+          if (!link) return;
+          for (var i = 0; i < localStorage.length; i++) {
+            var k = localStorage.key(i);
+            if (/^sb-.*-auth-token$/.test(k)) {
+              var v = JSON.parse(localStorage.getItem(k));
+              if (v && v.access_token) {
+                link.textContent = 'Account';
+                link.setAttribute('href', '/account');
+              }
+              break;
+            }
+          }
+        } catch (e) { /* stay as Log in */ }
+      })();
+    </script>
 
     <footer class="site-footer">
       <div class="container footer-inner">
