@@ -1,0 +1,160 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Create account — Yogis" description="Join Yogis to book classes, keep your class packs in one place, and access online courses.">
+  <section class="section">
+    <div class="container signup-wrap">
+      <div class="card signup-card">
+        <h1>Join Yogis</h1>
+        <p class="signup-sub">One account for classes, packs, and online courses.</p>
+
+        <form id="form-signup" class="login-form">
+          <label for="su-name">Name</label>
+          <input id="su-name" type="text" autocomplete="name" placeholder="Your name" required />
+          <label for="su-email">Email</label>
+          <input id="su-email" type="email" autocomplete="email" placeholder="you@example.com" required />
+          <label for="su-password">Password</label>
+          <input id="su-password" type="password" autocomplete="new-password" placeholder="At least 8 characters" minlength="8" required />
+          <button type="submit" class="btn btn-primary login-btn">Create account</button>
+        </form>
+
+        <p id="auth-msg" class="auth-msg" hidden></p>
+
+        <p class="login-alt login-switch">Already have an account? <a href="/login">Log in</a></p>
+      </div>
+
+      <div class="signup-side">
+        <h2>Why make an account?</h2>
+        <ul class="perk-list">
+          <li>Book and cancel classes in two taps</li>
+          <li>Keep your class packs and membership in one place</li>
+          <li>Stream your purchased courses on any device</li>
+          <li>Get early access when workshops open</li>
+        </ul>
+        <div class="signup-offer">
+          <strong>New here?</strong> Your first week of unlimited classes is $25 —
+          <a href="/new-to-yogis">see how it works</a>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { supabase } from '../lib/supabase.js';
+
+    const msg = document.getElementById('auth-msg');
+    function setMsg(text, kind) {
+      msg.textContent = text;
+      msg.className = `auth-msg ${kind}`;
+      msg.hidden = false;
+    }
+
+    if (supabase) {
+      supabase.auth.getSession().then(({ data }) => {
+        if (data.session) window.location.replace('/account');
+      });
+    }
+
+    document.getElementById('form-signup').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!supabase) return setMsg('Accounts aren’t configured yet.', 'err');
+      msg.hidden = true;
+      const { data, error } = await supabase.auth.signUp({
+        email: document.getElementById('su-email').value.trim(),
+        password: document.getElementById('su-password').value,
+        options: {
+          data: { full_name: document.getElementById('su-name').value.trim() },
+          emailRedirectTo: `${window.location.origin}/login?confirmed=1`,
+        },
+      });
+      if (error) {
+        const m = error.message || 'Something went wrong.';
+        if (/already registered/i.test(m)) return setMsg('That email already has an account — try logging in.', 'err');
+        if (/rate limit/i.test(m)) return setMsg('Too many emails sent — wait a bit and try again.', 'err');
+        return setMsg(m, 'err');
+      }
+      if (data.session) {
+        window.location.href = '/account';
+      } else {
+        setMsg('Almost there — check your email and click the confirmation link.', 'ok');
+      }
+    });
+  </script>
+</Base>
+
+<style>
+  .signup-wrap {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr;
+    gap: 3rem;
+    align-items: start;
+    max-width: 900px;
+  }
+
+  .signup-card { padding: 2.3rem 2.5rem 2rem; }
+
+  .signup-sub { color: var(--text-soft); margin-bottom: 1.6rem; }
+
+  .login-form { display: grid; gap: 0.4rem; }
+
+  .login-form label { font-weight: 600; font-size: 0.92rem; }
+
+  .login-form input {
+    padding: 0.75rem 0.9rem;
+    border: 1.5px solid var(--blue);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    background: var(--white);
+    color: var(--text);
+    margin-bottom: 0.9rem;
+  }
+
+  .login-form input:focus {
+    outline: none;
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(151, 143, 196, 0.25);
+  }
+
+  .login-btn { margin-top: 0.4rem; }
+
+  .login-alt { margin: 1rem 0 0; font-size: 0.9rem; }
+
+  .login-switch { padding-top: 1rem; border-top: 1px solid rgba(58, 53, 66, 0.1); margin-top: 1.4rem; }
+
+  .auth-msg {
+    margin: 1.2rem 0 0;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    font-size: 0.93rem;
+  }
+
+  .auth-msg.ok { background: var(--blue); color: var(--text); }
+  .auth-msg.err { background: #F3D9D9; color: #7A3B3B; }
+  .auth-msg[hidden] { display: none; }
+
+  .signup-side { padding-top: 1rem; }
+
+  .signup-side h2 { font-size: 1.4rem; }
+
+  .perk-list {
+    margin: 0 0 1.4rem;
+    padding-left: 1.2rem;
+    color: var(--text-soft);
+    display: grid;
+    gap: 0.6rem;
+    font-size: 0.97rem;
+  }
+
+  .signup-offer {
+    background: var(--lavender);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.3rem;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 860px) {
+    .signup-wrap { grid-template-columns: 1fr; }
+  }
+</style>
